@@ -42,16 +42,28 @@ export const ManageAccounts = () => {
   }, []);
 
   async function handleSave() {
-    const res = await fetch(
-      `/api/account/get-all-accounts?id=${session?.user?.uid}`,
-      {
-        method: "GET",
-      }
-    );
+    const res = await fetch("/api/account/create-account", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ...formData,
+        uid: session?.user?.uid,
+      }),
+    });
 
     const data = await res.json();
 
-    console.log(data);
+    if (data.success) {
+      getAllAccounts();
+      setFormData(initialFormData);
+      setShowAccountForm(false);
+    } else {
+      getAllAccounts();
+    }
+
+    console.log(data, "datadata");
   }
 
   if (pageLoader) return <CircleLoader />;

@@ -13,7 +13,7 @@ export async function POST(req) {
         const isAccountAlreadyExists = await Account.find({uid, name})
         const allAccounts = await Account.find({})
 
-        if (isAccountAlreadyExists) {
+        if (isAccountAlreadyExists && isAccountAlreadyExists.length > 0) {
             return NextResponse.json({
                 success: false,
                 message: "Account already exists, try again with a new name",
